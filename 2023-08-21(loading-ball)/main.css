@@ -1,0 +1,63 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+body{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.rotate-ball{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  width: 500px;
+  height: 500px;
+}
+
+.small-ball{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: wheat;
+}
+
+.left-ball{
+  background-color: rgb(233, 67, 89);
+  animation: leftAnimation linear 1.3s infinite;
+  z-index: 1;
+}
+.right-ball{
+  background-color: rgb(116, 240, 237);
+  animation: rightAnimation linear 1.3s infinite;
+  z-index: 0;
+}
+
+@keyframes leftAnimation {
+  0%{
+    transform: translateX(0);
+    z-index: 1;
+  }
+  50%{
+    transform: translateX(20px);
+
+  }
+  100%{
+    transform: translateX(0);
+    z-index: 0;
+  }
+}
+
+@keyframes rightAnimation {
+  0%{
+    transform: translateX(0);
+  }
+  50%{
+    transform: translateX(-20px);
+  }
+  100%{
+    transform: translateX(0);
+  }
+}
