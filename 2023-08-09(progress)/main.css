@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-color: #F44336;
+  transform-origin: 0 50%;
+  animation: grow-progress 1s linear;
+  animation-timeline: scroll();
+}
+
+main {
+  padding: 10px;
+}
+
+div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  margin: 10px;
+  background-color: beige;
+  color: coral;
+  font-size: 80px;
+}
+
+div:nth-child(odd) {
+  background-color: wheat
+}
+
+@keyframes grow-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
