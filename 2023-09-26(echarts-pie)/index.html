@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <script src="../static/echarts.js"></script> -->
+  <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+  <style>
+    :root {
+      --color: pink;
+      --lineColor: rgba(102, 163, 224, .2);
+      --box-width: 500px;
+      --box1-width: 425px;
+      --box2-width: 350px;
+      --circle-width: 50px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .main {
+      width: 500px;
+      height: 500px;
+      /* background-color:  var(--color); */
+    }
+
+    #pie {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -150px;
+      margin-left: -150px;
+      width: 300px;
+      height: 300px;
+      animation: return 10s linear infinite;
+      z-index: 999;
+    }
+
+    section {
+      position: relative;
+      width: var(--box-width);
+      height: var(--box-width);
+    }
+
+    section::before {
+      content: '';
+      position: absolute;
+      height: 10px;
+      width: 10px;
+      border-radius: 100%;
+      border-top: 1px solid var(--color);
+      top: 50%;
+      left: 50%;
+      margin-top: -5px;
+      margin-left: -5px;
+      animation: turn 1s infinite linear;
+      filter: drop-shadow(0 0 2px var(--color)) drop-shadow(0 0 5px var(--color)) drop-shadow(0 0 10px var(--color)) drop-shadow(0 0 20px var(--color));
+    }
+
+    .box,
+    .box::after,
+    .box::before {
+      box-sizing: border-box;
+      border: 2px solid var(--lineColor);
+      border-left: 2px solid var(--color);
+      border-right: 2px solid var(--color);
+      border-radius: 50%;
+    }
+
+    .box::after,
+    .box::before {
+      position: absolute;
+      content: '';
+      left: 50%;
+      top: 50%;
+    }
+
+    .box {
+      width: var(--box-width);
+      height: var(--box-width);
+      position: relative;
+      animation: turn 6s linear infinite;
+      transform-origin: 50% 50%;
+    }
+
+    .box::before {
+      width: var(--box1-width);
+      height: var(--box1-width);
+      margin-top: calc(var(--box1-width) / -2);
+      margin-left: calc(var(--box1-width) / -2);
+      transform-origin: 50% 50%;
+      animation: turn2 10s linear infinite;
+    }
+
+    .box::after {
+      width: var(--box2-width);
+      height: var(--box2-width);
+      margin-top: calc(var(--box2-width) / -2);
+      margin-left: calc(var(--box2-width) / -2);
+      transform-origin: 50% 50%;
+      animation: turn 15s linear infinite;
+    }
+
+    .box-circle,
+    .box-circle1,
+    .box-circle2 {
+      border: 2px solid var(--color);
+      opacity: .9;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: 50% 50%;
+      transform: translate(-50%, -50%);
+      width: var(--circle-width);
+      height: var(--circle-width);
+      animation: rotate 6s linear infinite;
+    }
+
+    .box-circle {
+      animation-delay: 0.2s;
+    }
+
+    .box-circle1 {
+      animation-delay: 1.2s;
+    }
+
+    .box-circle2 {
+      animation-delay: 2.2s;
+    }
+
+    @keyframes return {
+      100% {
+        transform: rotateZ(1turn);
+      }
+    }
+
+    @keyframes turn {
+      100% {
+        transform: rotateZ(-1turn);
+      }
+    }
+
+    @keyframes turn2 {
+      100% {
+        transform: rotateZ(1turn);
+      }
+    }
+
+    @keyframes rotate {
+      100% {
+        border-top: 2px solid var(--color);
+        border-bottom: 2px solid var(--color);
+        transform: translate(-50%, -50%) rotate3d(.5, 0.5, 0.5, -720deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="main">
+    <div id="pie"></div>
+    <section>
+      <div class="box"></div>
+      <div class="box-circle"></div>
+      <div class="box-circle1"></div>
+      <div class="box-circle2"></div>
+    </section>
+  </div>
+
+  <script type="text/javascript">
+    const insideRadius = 60  // 环内半径
+    const pidWidth = 40 // 环的宽度
+    const outsideRadius = insideRadius+pidWidth  // 环外半径
+    const piePadding = 10  // 环的间隔
+    const value1 = 75
+    const value2 = 15
+    const value3 = 10
+    var chartDom = document.getElementById('pie');
+    var myChart = echarts.init(chartDom);
+    var option;
+    var dataStyle = {
+      normal: {
+        label: { show: false },
+        labelLine: { show: false },
+
+      }
+    };
+    var placeHolderStyle = {
+      normal: {
+        color: 'rgba(0,0,0,0)',
+        label: { show: false },
+        labelLine: { show: false }
+      },
+      emphasis: {
+        color: 'rgba(0,0,0,0)'
+      }
+    };
+    option = {
+      color: ['#85b6b2', '#6d4f8d', '#cd5e7e',],
+      tooltip: {
+        show: false,
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+      },
+      legend: {
+        show: false,
+        left: 'right',
+        itemGap: 12,
+        data: ['空货位', '空托盘', '物料盘']
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          mark: { show: true },
+        }
+      },
+      series: [
+        {
+          name: 'Line 1',
+          type: 'pie',
+          clockWise: false,
+          radius: [insideRadius, outsideRadius],
+          itemStyle: dataStyle,
+          hoverAnimation: false,
+          startAngle: 0,
+          data: [
+            {
+              value: value1,
+              name: '空货位'
+            },
+            {
+              value: 100 - value1,
+              name: 'invisible',
+              itemStyle: placeHolderStyle
+            },
+          ]
+
+        },
+        {
+          name: 'Line 2',
+          type: 'pie',
+          clockWise: false,
+          radius: [insideRadius+piePadding, outsideRadius+piePadding],
+          itemStyle: dataStyle,
+          hoverAnimation: false,
+          startAngle: 360 / 100 * value1,
+          data: [
+            {
+              value: value2,
+              name: '空托盘'
+            },
+            {
+              value: 100 - value2,
+              name: 'invisible',
+              itemStyle: placeHolderStyle
+            },
+          ]
+        },
+        {
+          name: 'Line 3',
+          type: 'pie',
+          clockWise: false,
+          hoverAnimation: false,
+          radius: [insideRadius+piePadding*2, outsideRadius+piePadding*2],
+          itemStyle: dataStyle,
+          startAngle: 360 / 100 * (value1 + value2),
+          data: [
+            {
+              value: value3,
+              name: '物料盘'
+            },
+            {
+              value: 100 - value3,
+              name: 'invisible',
+              itemStyle: placeHolderStyle
+            },
+
+          ]
+        },
+      ]
+    };
+    console.log(option);
+    // 这里设置需要展示的label的样式
+    let label = {
+      show: true,
+      fontSize: 14,
+      color: '#000' // 默认颜色是饼块的颜色
+    }
+    // 设置标签指示线的样式
+    let labelLine = {
+      show: true,
+      lineStyle: { // 指示线样式，默认为饼块颜色
+        color: '#000'
+      }
+    }
+
+    // seriesData是写在饼图series中的data对应的数据
+    option.series.forEach((item, index) => {
+      if (item.name == '物料盘') {
+        item['label'] = label // 设置饼图中对应数据的label是之前定义的label
+        item['labelLine'] = labelLine
+      }
+    })
+
+    option && myChart.setOption(option);
+
+  </script>
+</body>
+
+</html>
