@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%">
 
 <head>
   <meta charset="UTF-8">
@@ -11,10 +11,10 @@
     :root {
       --color: pink;
       --lineColor: rgba(102, 163, 224, .2);
-      --box-width: 500px;
-      --box1-width: 425px;
-      --box2-width: 350px;
-      --circle-width: 50px;
+      --box-width: calc(100vh - 4px);
+      --box1-width: 90vh;
+      --box2-width: 80vh;
+      --circle-width: 10vh;
     }
 
     * {
@@ -23,16 +23,17 @@
     }
 
     body {
-      background-color: #000;
+      /* background-color: #000; */
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
+      margin: 0;
+      overflow: hidden;
     }
 
     .main {
-      width: 500px;
-      height: 500px;
+      height: 100vh;
       /* background-color:  var(--color); */
     }
 
@@ -40,31 +41,31 @@
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-top: -150px;
-      margin-left: -150px;
-      width: 300px;
-      height: 300px;
+      margin-top: -30vh;
+      margin-left: -30vh;
+      width: 60vh;
+      height: 60vh;
       animation: return 10s linear infinite;
       z-index: 999;
     }
 
     section {
+      /* border: 1px solid rgba(0, 0, 0, .0); */
       position: relative;
-      width: var(--box-width);
-      height: var(--box-width);
+      height: 100vh;
     }
 
     section::before {
       content: '';
       position: absolute;
-      height: 10px;
-      width: 10px;
+      height: 1vh;
+      width: 1vh;
       border-radius: 100%;
       border-top: 1px solid var(--color);
       top: 50%;
       left: 50%;
-      margin-top: -5px;
-      margin-left: -5px;
+      margin-top: -0.5vh;
+      margin-left: -0.5vh;
       animation: turn 1s infinite linear;
       filter: drop-shadow(0 0 2px var(--color)) drop-shadow(0 0 5px var(--color)) drop-shadow(0 0 10px var(--color)) drop-shadow(0 0 20px var(--color));
     }
@@ -88,8 +89,8 @@
     }
 
     .box {
-      width: var(--box-width);
-      height: var(--box-width);
+      width: 100vh;
+      height: 100vh;
       position: relative;
       animation: turn 6s linear infinite;
       transform-origin: 50% 50%;
@@ -170,7 +171,6 @@
 </head>
 
 <body>
-
   <div class="main">
     <div id="pie"></div>
     <section>
@@ -180,143 +180,149 @@
       <div class="box-circle2"></div>
     </section>
   </div>
-
   <script type="text/javascript">
-    const insideRadius = 60  // 环内半径
-    const pidWidth = 40 // 环的宽度
-    const outsideRadius = insideRadius+pidWidth  // 环外半径
-    const piePadding = 10  // 环的间隔
-    const value1 = 75
-    const value2 = 15
-    const value3 = 10
     var chartDom = document.getElementById('pie');
     var myChart = echarts.init(chartDom);
-    var option;
-    var dataStyle = {
-      normal: {
-        label: { show: false },
-        labelLine: { show: false },
+    function render() {
+      const bodyHeight = document.body.offsetHeight
+      console.log(bodyHeight);
+      const insideRadius = 0.18 * bodyHeight  // 环内半径
+      const pidWidth = 0.08 * bodyHeight // 环的宽度
+      const outsideRadius = insideRadius + pidWidth  // 环外半径
+      const piePadding = 0.02 * bodyHeight  // 环的间隔
+      const value1 = 75
+      const value2 = 15
+      const value3 = 10
 
-      }
-    };
-    var placeHolderStyle = {
-      normal: {
-        color: 'rgba(0,0,0,0)',
-        label: { show: false },
-        labelLine: { show: false }
-      },
-      emphasis: {
-        color: 'rgba(0,0,0,0)'
-      }
-    };
-    option = {
-      color: ['#85b6b2', '#6d4f8d', '#cd5e7e',],
-      tooltip: {
-        show: false,
-        formatter: "{a} <br/>{b} : {c} ({d}%)"
-      },
-      legend: {
-        show: false,
-        left: 'right',
-        itemGap: 12,
-        data: ['空货位', '空托盘', '物料盘']
-      },
-      toolbox: {
-        show: true,
-        feature: {
-          mark: { show: true },
+      var option;
+      var dataStyle = {
+        normal: {
+          label: { show: false },
+          labelLine: { show: false },
+
         }
-      },
-      series: [
-        {
-          name: 'Line 1',
-          type: 'pie',
-          clockWise: false,
-          radius: [insideRadius, outsideRadius],
-          itemStyle: dataStyle,
-          hoverAnimation: false,
-          startAngle: 0,
-          data: [
-            {
-              value: value1,
-              name: '空货位'
-            },
-            {
-              value: 100 - value1,
-              name: 'invisible',
-              itemStyle: placeHolderStyle
-            },
-          ]
+      };
+      var placeHolderStyle = {
+        normal: {
+          color: 'rgba(0,0,0,0)',
+          label: { show: false },
+          labelLine: { show: false }
+        },
+        emphasis: {
+          color: 'rgba(0,0,0,0)'
+        }
+      };
+      option = {
+        color: ['#85b6b2', '#6d4f8d', '#cd5e7e',],
+        tooltip: {
+          show: false,
+          formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+          show: false,
+          left: 'right',
+          itemGap: 12,
+          data: ['空货位', '空托盘', '物料盘']
+        },
+        toolbox: {
+          show: true,
+          feature: {
+            mark: { show: true },
+          }
+        },
+        series: [
+          {
+            name: 'Line 1',
+            type: 'pie',
+            clockWise: false,
+            radius: [insideRadius, outsideRadius],
+            itemStyle: dataStyle,
+            hoverAnimation: false,
+            startAngle: 0,
+            data: [
+              {
+                value: value1,
+                name: '空货位'
+              },
+              {
+                value: 100 - value1,
+                name: 'invisible',
+                itemStyle: placeHolderStyle
+              },
+            ]
 
-        },
-        {
-          name: 'Line 2',
-          type: 'pie',
-          clockWise: false,
-          radius: [insideRadius+piePadding, outsideRadius+piePadding],
-          itemStyle: dataStyle,
-          hoverAnimation: false,
-          startAngle: 360 / 100 * value1,
-          data: [
-            {
-              value: value2,
-              name: '空托盘'
-            },
-            {
-              value: 100 - value2,
-              name: 'invisible',
-              itemStyle: placeHolderStyle
-            },
-          ]
-        },
-        {
-          name: 'Line 3',
-          type: 'pie',
-          clockWise: false,
-          hoverAnimation: false,
-          radius: [insideRadius+piePadding*2, outsideRadius+piePadding*2],
-          itemStyle: dataStyle,
-          startAngle: 360 / 100 * (value1 + value2),
-          data: [
-            {
-              value: value3,
-              name: '物料盘'
-            },
-            {
-              value: 100 - value3,
-              name: 'invisible',
-              itemStyle: placeHolderStyle
-            },
+          },
+          {
+            name: 'Line 2',
+            type: 'pie',
+            clockWise: false,
+            radius: [insideRadius + piePadding, outsideRadius + piePadding],
+            itemStyle: dataStyle,
+            hoverAnimation: false,
+            startAngle: 360 / 100 * value1,
+            data: [
+              {
+                value: value2,
+                name: '空托盘'
+              },
+              {
+                value: 100 - value2,
+                name: 'invisible',
+                itemStyle: placeHolderStyle
+              },
+            ]
+          },
+          {
+            name: 'Line 3',
+            type: 'pie',
+            clockWise: false,
+            hoverAnimation: false,
+            radius: [insideRadius + piePadding * 2, outsideRadius + piePadding * 2],
+            itemStyle: dataStyle,
+            startAngle: 360 / 100 * (value1 + value2),
+            data: [
+              {
+                value: value3,
+                name: '物料盘'
+              },
+              {
+                value: 100 - value3,
+                name: 'invisible',
+                itemStyle: placeHolderStyle
+              },
 
-          ]
-        },
-      ]
-    };
-    console.log(option);
-    // 这里设置需要展示的label的样式
-    let label = {
-      show: true,
-      fontSize: 14,
-      color: '#000' // 默认颜色是饼块的颜色
-    }
-    // 设置标签指示线的样式
-    let labelLine = {
-      show: true,
-      lineStyle: { // 指示线样式，默认为饼块颜色
-        color: '#000'
+            ]
+          },
+        ]
+      };
+      console.log(option);
+      // 这里设置需要展示的label的样式
+      let label = {
+        show: true,
+        fontSize: 14,
+        color: '#000' // 默认颜色是饼块的颜色
       }
-    }
-
-    // seriesData是写在饼图series中的data对应的数据
-    option.series.forEach((item, index) => {
-      if (item.name == '物料盘') {
-        item['label'] = label // 设置饼图中对应数据的label是之前定义的label
-        item['labelLine'] = labelLine
+      // 设置标签指示线的样式
+      let labelLine = {
+        show: true,
+        lineStyle: { // 指示线样式，默认为饼块颜色
+          color: '#000'
+        }
       }
-    })
 
-    option && myChart.setOption(option);
+      // seriesData是写在饼图series中的data对应的数据
+      option.series.forEach((item, index) => {
+        if (item.name == '物料盘') {
+          item['label'] = label // 设置饼图中对应数据的label是之前定义的label
+          item['labelLine'] = labelLine
+        }
+      })
 
+      option && myChart.setOption(option);
+    }
+    render()
+    window.addEventListener('resize', render);
+    window.addEventListener('resize', myChart.resize);
   </script>
 </body>
 
