@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- <script src="../static/echarts.simple.min.js"></script> -->
+  <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+
+    body {
+      position: relative;
+      height: 100vh;
+      background-color: #000;
+    }
+
+    #pie {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -30vh;
+      margin-left: -30vh;
+      width: 60vh;
+      height: 60vh;
+      z-index: 999;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="pie"></div>
+  <script>
+    var chartDom = document.getElementById('pie');
+    var myChart = echarts.init(chartDom);
+    const echartData = [
+      {
+        value: 234,
+        name: '联盟广告',
+
+      },
+      {
+        value: 135,
+        name: '视频广告',
+
+      },
+      {
+        value: 350,
+        name: '搜索引擎',
+
+      }]
+    option = {
+      angleAxis: {
+        clockwise: false, // 刻度增长是否按顺时针，默认顺时针(true)。
+        axisLine: {
+          show: false
+        },
+        axisLabel: {
+          show: false
+        },
+        splitLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        min: 0,
+        max: 16, //一圈的刻度值
+        startAngle: 0 //初始角度
+    },
+    radiusAxis: {
+        type: 'category',
+        data: ['1', '2', '3', '4'], // 极坐标径向轴中的类目，这边有几个数，
+        // 就代表径向轴分了几份，和series中的data对应，这样就可以撑开圆环
+        z: 10,
+        axisLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          show: false
+        },
+    },
+    polar: {
+    },
+      color: ["#Fb4035", "#162c7a", "#53b6be"],
+      silent: true,
+      series: [{
+        name: '访问来源',
+        type: 'pie',
+        radius: ['30%', '40%'],
+        avoidLabelOverlap: true,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        emphasis: {
+          label: {
+            show: false,
+            fontSize: '30',
+            fontWeight: 'bold'
+          }
+        },
+        labelLine: {
+          show: false
+        },
+        data: echartData,
+        coordinateSystem: 'polar',
+	      roundCap: true,
+
+      }]
+    };
+
+    option && myChart.setOption(option);
+  </script>
+</body>
+
+</html>
