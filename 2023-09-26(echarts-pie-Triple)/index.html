@@ -1,3 +1,4 @@
+<!-- 自适应缩放版本 -->
 <!DOCTYPE html>
 <html lang="en" style="height: 100%">
 
@@ -193,6 +194,7 @@
       const value1 = 75
       const value2 = 15
       const value3 = 10
+      const total = value1+value2+value3
 
       var option;
       var dataStyle = {
@@ -245,7 +247,7 @@
                 name: '空货位'
               },
               {
-                value: 100 - value1,
+                value: total - value1,
                 name: 'invisible',
                 itemStyle: placeHolderStyle
               },
@@ -259,14 +261,14 @@
             radius: [insideRadius + piePadding, outsideRadius + piePadding],
             itemStyle: dataStyle,
             hoverAnimation: false,
-            startAngle: 360 / 100 * value1,
+            startAngle: 360 / total * value1,
             data: [
               {
                 value: value2,
                 name: '空托盘'
               },
               {
-                value: 100 - value2,
+                value: total - value2,
                 name: 'invisible',
                 itemStyle: placeHolderStyle
               },
@@ -279,14 +281,14 @@
             hoverAnimation: false,
             radius: [insideRadius + piePadding * 2, outsideRadius + piePadding * 2],
             itemStyle: dataStyle,
-            startAngle: 360 / 100 * (value1 + value2),
+            startAngle: 360 / total * (value1 + value2),
             data: [
               {
                 value: value3,
                 name: '物料盘'
               },
               {
-                value: 100 - value3,
+                value: total - value3,
                 name: 'invisible',
                 itemStyle: placeHolderStyle
               },
@@ -321,7 +323,9 @@
       option && myChart.setOption(option);
     }
     render()
+    // 页面大小变化后重新渲染
     window.addEventListener('resize', render);
+    // 只重新渲染图表canvas大小不会发生变化，故加入myChart.resize
     window.addEventListener('resize', myChart.resize);
   </script>
 </body>
