@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      background-color: #000;
+    }
+
+    .container {
+      text-align: center;
+      filter: contrast(30);  
+      background-color: #000;
+    }
+
+    .text {
+      font-size: 100px;
+      color: #fff;
+      animation: showup 2s linear forwards;
+    }
+
+    @keyframes showup {
+      0% {
+        filter: blur(10px);
+        letter-spacing: -50px;
+      }
+
+      100% {
+        filter: blur(2px);
+        letter-spacing: 0px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <span class="text">Apex Legends</span>
+  </div>
+</body>
+
+</html>
